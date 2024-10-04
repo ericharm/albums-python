@@ -1,0 +1,37 @@
+[tool.poetry]
+name = "albums-python"
+version = "0.1.0"
+description = ""
+authors = ["Eric Harm <ericharm@gmail.com>"]
+readme = "README.md"
+packages = [{include = "albums_python"}]
+
+[tool.poetry.dependencies]
+python = "^3.10"
+flask = "^3.0.3"
+mypy = "^1.11.2"
+isort = "^5.13.2"
+flake8 = "^7.1.1"
+black = "^24.8.0"
+boto3 = "^1.35.33"
+mypy-boto3-ssm = "^1.35.21"
+sqlalchemy = "^2.0.35"
+marshmallow-dataclass = "^8.7.1"
+psycopg2 = "^2.9.9"
+
+[tool.black]
+line-length = 100
+
+[tool.isort]
+multi_line_output = 3
+include_trailing_comma = true
+force_grid_wrap = 0
+use_parentheses = true
+line_length = 100
+
+[tool.mypy]
+disallow_untyped_defs = true
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
