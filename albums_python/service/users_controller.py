@@ -1,0 +1,35 @@
+from flask import Blueprint, parser
+
+from albums_python.domain import users as users_domain
+from albums_python.service.models.response import Response
+from albums_python.service.models.user_schemas import (
+    LoginUserRequest,
+    LoginUserRequestSchema,
+    RegisterUserRequest,
+    RegisterUserRequestSchema,
+    UserResponseSchema,
+)
+
+users_blueprint = Blueprint("users", __name__)
+
+
+@users_blueprint.post("/users")
+@parser.use_args(RegisterUserRequestSchema)
+def register_user(request: RegisterUserRequest) -> Response:
+    user = users_domain.register_user(email=request.email, password=request.password)
+
+    if user is None:
+        return dict(message="Not found"), 404
+
+    return UserResponseSchema.dump(user)
+
+
+@users_blueprint.post("/users/login")
+@parser.use_args(LoginUserRequestSchema)
+def login_user(request: LoginUserRequest) -> Response:
+    user = users_domain.login_user(email=request.email, password=request.password)
+
+    if user is None:
+        return dict(message="Not found"), 404
+
+    return UserResponseSchema.dump(user)

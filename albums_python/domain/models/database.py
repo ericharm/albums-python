@@ -1,15 +1,13 @@
 from dataclasses import dataclass
+from typing import Optional
 
-from marshmallow_dataclass import class_schema
 
-
+# Ugh move this please
 @dataclass
-class DatabaseCredentials:
-    database: str
-    username: str
-    password: str
-    host: str
-    port: int
-
-
-DatabaseCredentialsSchema = class_schema(DatabaseCredentials)()
+class DatabaseConfig:
+    driver: str
+    database: Optional[str]
+    username: Optional[str]
+    password: Optional[str]
+    host: Optional[str]
+    port: Optional[str]
