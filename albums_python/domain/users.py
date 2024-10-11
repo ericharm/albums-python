@@ -41,18 +41,6 @@ def register_user(email: str, password: str) -> Optional[UserResponse]:
     )
 
 
-def verify_jwt(token: str) -> Optional[str]:
-    try:
-        payload = jwt.decode(token, SECRET_KEY, algorithms=[JWT_ALGORITHM])
-        return payload["user_id"]
-    except jwt.ExpiredSignatureError:
-        # Token has expired
-        return None
-    except jwt.InvalidTokenError:
-        # Token has expired
-        return None
-
-
 def _generate_jwt(user_id: str) -> str:
     payload = dict(
         user_id=user_id,

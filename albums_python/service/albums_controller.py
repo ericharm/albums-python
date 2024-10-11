@@ -1,10 +1,8 @@
-from dataclasses import asdict
-
 from flask import Blueprint
 from webargs.flaskparser import use_args
 
 from albums_python.query import album_queries
-from albums_python.service.decorators.jwt import jwt_required
+from albums_python.service.jwt import jwt_required
 from albums_python.service.models.album_schemas import (
     AlbumRequest,
     AlbumRequestSchema,
