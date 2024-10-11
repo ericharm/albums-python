@@ -3,7 +3,8 @@ from freezegun import freeze_time
 from albums_python.domain.utils import current_utc_datetime
 from albums_python.query import album_queries
 from albums_python.query.models.album import Album
-from tests.utils import clear_table, database_model_to_dict
+from tests.utils.albums import create_test_album
+from tests.utils.base import clear_table, database_model_to_dict
 
 
 def test_create_album() -> None:
@@ -30,8 +31,8 @@ def test_create_album() -> None:
             format="LP",
             label="Asylum",
             notes=None,
-            created_at=album.created_at,
-            updated_at=album.updated_at,
+            created_at=now,
+            updated_at=now,
         )
 
 
@@ -40,14 +41,15 @@ def test_get_album_by_id() -> None:
     album_id = 0
 
     with freeze_time(now):
-        album_id = album_queries.create_album(
+        album = create_test_album(
             artist="The Beatles",
             title="Abbey Road",
             released="1969",
             format="LP",
             label="Apple",
             notes=None,
-        ).id
+        )
+        album_id = album.id
 
     album = album_queries.get_album_by_id(album_id)
     assert album is not None
@@ -60,27 +62,27 @@ def test_get_album_by_id() -> None:
         format="LP",
         label="Apple",
         notes=None,
-        created_at=album.created_at,
-        updated_at=album.updated_at,
+        created_at=now.replace(tzinfo=None),
+        updated_at=now.replace(tzinfo=None),
     )
 
 
 def test_get_albums() -> None:
-    # Clear the albums table:
     clear_table(Album)
 
     now = current_utc_datetime()
     album_id = 0
 
     with freeze_time(now):
-        album_id = album_queries.create_album(
+        album = create_test_album(
             artist="The Beatles",
             title="Abbey Road",
             released="1969",
             format="LP",
             label="Apple",
             notes=None,
-        ).id
+        )
+        album_id = album.id
 
     albums = album_queries.get_albums()
     assert len(albums) == 1
@@ -94,6 +96,6 @@ def test_get_albums() -> None:
         format="LP",
         label="Apple",
         notes=None,
-        created_at=album.created_at,
-        updated_at=album.updated_at,
+        created_at=now.replace(tzinfo=None),
+        updated_at=now.replace(tzinfo=None),
     )

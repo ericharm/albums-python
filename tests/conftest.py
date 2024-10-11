@@ -1,6 +1,7 @@
 import os
 
 import pytest
+from faker import Faker
 from sqlalchemy.orm import sessionmaker
 
 os.environ["DB_DRIVER"] = "sqlite"
@@ -10,6 +11,12 @@ os.environ["SECRET_KEY"] = "secret"
 
 from albums_python.client.database import get_database_engine  # noqa
 from albums_python.query.models.model import Model  # noqa
+
+
+@pytest.fixture(scope="function")
+def faker():
+    _faker = Faker()
+    return _faker
 
 
 @pytest.fixture(scope="session", autouse=True)

@@ -13,8 +13,8 @@ from albums_python.service.models.user_schemas import UserResponse
 def login_user(email: str, password: str) -> Optional[UserResponse]:
     user = get_user_by_email(email=email)
 
-    if user and verify_password(password=password, encrypted_password=user.encrypted_password):
-        token = generate_jwt(str(user.id))
+    if user and _verify_password(password=password, encrypted_password=user.encrypted_password):
+        token = _generate_jwt(str(user.id))
         return UserResponse(
             id=user.id,
             email=user.email,
@@ -26,12 +26,19 @@ def login_user(email: str, password: str) -> Optional[UserResponse]:
     return None
 
 
-def generate_jwt(user_id: str) -> str:
-    payload = dict(
-        user_id=user_id,
-        exp=current_utc_datetime() + datetime.timedelta(hours=1),
+def register_user(email: str, password: str) -> Optional[UserResponse]:
+    if get_user_by_email(email=email) is not None:
+        return None
+
+    user = create_user(email=email, encrypted_password=_encrypt_password(password))
+    token = _generate_jwt(str(user.id))
+    return UserResponse(
+        id=user.id,
+        email=user.email,
+        token=token,
+        created_at=user.created_at,
+        updated_at=user.updated_at,
     )
-    return jwt.encode(payload, SECRET_KEY, algorithm=JWT_ALGORITHM)
 
 
 def verify_jwt(token: str) -> Optional[str]:
@@ -46,24 +53,17 @@ def verify_jwt(token: str) -> Optional[str]:
         return None
 
 
-def register_user(email: str, password: str) -> Optional[UserResponse]:
-    if get_user_by_email(email=email) is not None:
-        return None
-
-    user = create_user(email=email, encrypted_password=encrypt_password(password))
-    token = generate_jwt(str(user.id))
-    return UserResponse(
-        id=user.id,
-        email=user.email,
-        token=token,
-        created_at=user.created_at,
-        updated_at=user.updated_at,
+def _generate_jwt(user_id: str) -> str:
+    payload = dict(
+        user_id=user_id,
+        exp=current_utc_datetime() + datetime.timedelta(hours=1),
     )
+    return jwt.encode(payload, SECRET_KEY, algorithm=JWT_ALGORITHM)
 
 
-def encrypt_password(password: str) -> str:
+def _encrypt_password(password: str) -> str:
     return bcrypt.hash(password)
 
 
-def verify_password(password: str, encrypted_password: str) -> bool:
+def _verify_password(password: str, encrypted_password: str) -> bool:
     return bcrypt.verify(password, encrypted_password)
