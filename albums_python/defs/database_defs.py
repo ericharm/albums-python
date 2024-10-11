@@ -3,7 +3,7 @@ from enum import Enum
 
 
 class DatabaseDriver(str, Enum):
-    postgres = "postgres"
+    postgresql = "postgresql"
     sqlite = "sqlite"
 
 
@@ -13,3 +13,8 @@ DB_USER = os.getenv("DB_USER")
 DB_PASSWORD = os.getenv("DB_PASSWORD")
 DB_HOST = os.getenv("DB_HOST")
 DB_PORT = os.getenv("DB_PORT")
+
+CONNECTION_STRING_FROM_DB_DRIVER = {
+    DatabaseDriver.sqlite: "sqlite:///{database}",
+    DatabaseDriver.postgresql: "postgresql://{username}:{password}@{host}:{port}/{database}",
+}

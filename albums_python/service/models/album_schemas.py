@@ -10,6 +10,19 @@ from albums_python.query.models.album import Album
 
 
 @dataclass
+class AlbumRequest:
+    artist: Optional[str]
+    released: Optional[str]
+    title: str
+    format: Optional[str]
+    label: Optional[str]
+    notes: Optional[str]
+
+
+AlbumRequestSchema = class_schema(AlbumRequest)()
+
+
+@dataclass
 class AlbumResponse:
     id: int
     artist: Optional[str]

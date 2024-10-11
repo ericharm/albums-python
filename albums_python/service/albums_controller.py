@@ -1,7 +1,13 @@
+from dataclasses import asdict
+
 from flask import Blueprint
+from webargs.flaskparser import use_args
 
 from albums_python.query import album_queries
+from albums_python.service.decorators.jwt import jwt_required
 from albums_python.service.models.album_schemas import (
+    AlbumRequest,
+    AlbumRequestSchema,
     AlbumResponse,
     AlbumResponseSchema,
     AlbumsIndexResponse,
@@ -31,6 +37,9 @@ def show(album_id: int) -> Response:
     return AlbumResponseSchema.dump(AlbumResponse.from_album(album))
 
 
-# @albums.post('/albums')
-# @jwt_required
-# def create(...):
+@albums_blueprint.post("/albums")
+@jwt_required
+@use_args(AlbumRequestSchema)
+def create(_: str, request: AlbumRequest) -> Response:
+    album = album_queries.create_album(**AlbumRequestSchema.dump(request))
+    return AlbumResponseSchema.dump(AlbumResponse.from_album(album)), 201

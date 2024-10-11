@@ -2,7 +2,6 @@ from dataclasses import dataclass
 from typing import Optional
 
 
-# Ugh move this please
 @dataclass
 class DatabaseConfig:
     driver: str
