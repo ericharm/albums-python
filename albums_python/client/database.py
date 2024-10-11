@@ -36,7 +36,7 @@ def get_database_engine() -> Engine:
     )
 
     connection_string = _get_connection_string(config)
-    return create_engine(connection_string, echo=False, connect_args={"check_same_thread": False})
+    return create_engine(connection_string, echo=False)
 
 
 def _get_connection_string(database_config: DatabaseConfig) -> str:
@@ -48,9 +48,5 @@ def _get_connection_string(database_config: DatabaseConfig) -> str:
         raise ValueError(f"Unsupported database driver: {driver}")
 
     return connection_string.format(
-        database=database,
-        username=username,
-        password=password,
-        host=host,
-        port=port,
+        database=database, username=username, password=password, host=host, port=port
     )

@@ -810,7 +810,7 @@ reports = ["lxml"]
 name = "mypy-boto3-ssm"
 version = "1.35.21"
 description = "Type annotations for boto3.SSM 1.35.21 service generated with mypy-boto3-builder 8.1.0"
-category = "main"
+category = "dev"
 optional = false
 python-versions = ">=3.8"
 files = [
@@ -1210,7 +1210,7 @@ test = ["coverage[toml] (>=7)", "mypy (>=1.2.0)", "pytest (>=7)"]
 name = "types-passlib"
 version = "1.7.7.20240819"
 description = "Typing stubs for passlib"
-category = "main"
+category = "dev"
 optional = false
 python-versions = ">=3.8"
 files = [
@@ -1222,7 +1222,7 @@ files = [
 name = "types-python-dateutil"
 version = "2.9.0.20241003"
 description = "Typing stubs for python-dateutil"
-category = "main"
+category = "dev"
 optional = false
 python-versions = ">=3.8"
 files = [
@@ -1319,4 +1319,4 @@ watchdog = ["watchdog (>=2.3)"]
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.10"
-content-hash = "0c8fe29056f9dfcd3eda82beecf70e6f779e8204bf13ea8fa1bd6df519215d5b"
+content-hash = "ce8ffca45b6dc2e34f43e7a6fd06942a98a4e22f134b3caca86881f3659f6389"

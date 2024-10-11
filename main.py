@@ -1,4 +1,8 @@
-from albums_python.app import create_app
+from dotenv.main import load_dotenv
+
+load_dotenv()
+
+from albums_python.app import app
 
 if __name__ == "__main__":
-    create_app()
+    app.run()

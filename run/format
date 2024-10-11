@@ -1,0 +1,3 @@
+#!/bin/bash
+
+black . && isort . && flake8 albums_python && mypy albums_python
