@@ -7,6 +7,7 @@ from typing import Optional
 from marshmallow_dataclass import class_schema
 
 from albums_python.query.models.album import Album
+from albums_python.service.models.http import PaginatedResponse
 
 
 @dataclass
@@ -53,7 +54,7 @@ AlbumResponseSchema = class_schema(AlbumResponse)()
 
 
 @dataclass
-class AlbumsIndexResponse:
+class AlbumsIndexResponse(PaginatedResponse):
     albums: list[AlbumResponse]
 
 

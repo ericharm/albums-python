@@ -5,13 +5,14 @@ import jwt
 from flask import request
 
 from albums_python.defs.user_defs import JWT_ALGORITHM, SECRET_KEY
-from albums_python.service.models.response import Response
+from albums_python.service.models.http import Response
 
 
 def jwt_required(func: Callable) -> Callable:
     @wraps(func)
     def decorated_function(*args: Any, **kwargs: Any) -> Response:
         raw_token = request.headers.get("Authorization")
+
         if raw_token is None:
             return dict(message="Token is missing"), 403
 
@@ -20,6 +21,7 @@ def jwt_required(func: Callable) -> Callable:
 
         token = raw_token.split("Bearer ")[1]
         user_id = _verify_jwt(token)
+
         if user_id is None:
             return dict(message="Invalid or expired token"), 403
 

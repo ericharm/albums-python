@@ -26,9 +26,13 @@ def test_albums_index(client: TestClient) -> None:
         )
 
     with patch("albums_python.service.albums_controller"), client() as c:
-        response = c.get("/albums")
+        response = c.get("/albums", query_string=dict(page=1, page_size=10))
         assert response.status_code == 200
         assert response.json == dict(
+            page=1,
+            page_size=10,
+            total_pages=1,
+            total_count=1,
             albums=[
                 dict(
                     id=1,
@@ -41,7 +45,7 @@ def test_albums_index(client: TestClient) -> None:
                     created_at=now.replace(tzinfo=None).isoformat(),
                     updated_at=now.replace(tzinfo=None).isoformat(),
                 )
-            ]
+            ],
         )
 
 

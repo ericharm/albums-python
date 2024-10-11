@@ -67,7 +67,16 @@ def test_get_album_by_id() -> None:
     )
 
 
-def test_get_albums() -> None:
+def test_get_albums_count() -> None:
+    clear_table(Album)
+
+    for _ in range(8):
+        create_test_album()
+
+    assert album_queries.get_albums_count() == 8
+
+
+def test_get_albums_page() -> None:
     clear_table(Album)
 
     now = current_utc_datetime()
@@ -84,7 +93,7 @@ def test_get_albums() -> None:
         )
         album_id = album.id
 
-    albums = album_queries.get_albums()
+    albums = album_queries.get_albums_page(page=1, page_size=10)
     assert len(albums) == 1
     album, *_ = albums
 

@@ -1,6 +1,7 @@
 from flask import Blueprint
 from webargs.flaskparser import use_args
 
+from albums_python.domain import albums as albums_domain
 from albums_python.query import album_queries
 from albums_python.service.jwt import jwt_required
 from albums_python.service.models.album_schemas import (
@@ -8,21 +9,18 @@ from albums_python.service.models.album_schemas import (
     AlbumRequestSchema,
     AlbumResponse,
     AlbumResponseSchema,
-    AlbumsIndexResponse,
     AlbumsIndexResponseSchema,
 )
-from albums_python.service.models.response import Response
+from albums_python.service.models.http import PaginatedRequest, PaginatedRequestSchema, Response
 
 albums_blueprint = Blueprint("albums", __name__)
 
 
 @albums_blueprint.get("/albums")
-def index() -> Response:
-    all_albums = album_queries.get_albums()
-
-    return AlbumsIndexResponseSchema.dump(
-        AlbumsIndexResponse(albums=[AlbumResponse.from_album(album) for album in all_albums])
-    )
+@use_args(PaginatedRequestSchema)
+def index(page_data: PaginatedRequest) -> Response:
+    result = albums_domain.get_albums_page(page=page_data.page, page_size=page_data.page_size)
+    return AlbumsIndexResponseSchema.dump(result)
 
 
 @albums_blueprint.get("/albums/<album_id>")

@@ -2,7 +2,7 @@ from flask import Blueprint
 from webargs.flaskparser import use_args
 
 from albums_python.domain import users as users_domain
-from albums_python.service.models.response import Response
+from albums_python.service.models.http import Response
 from albums_python.service.models.user_schemas import (
     LoginUserRequest,
     LoginUserRequestSchema,
