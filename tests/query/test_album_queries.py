@@ -42,11 +42,11 @@ def test_get_album_by_id() -> None:
 
     with freeze_time(now):
         album = create_test_album(
-            artist="The Beatles",
-            title="Abbey Road",
-            released="1969",
+            artist="Meat Loaf",
+            title="Bat Out of Hell",
+            released="1977",
             format="LP",
-            label="Apple",
+            label="Epic",
             notes=None,
         )
         album_id = album.id
@@ -56,11 +56,11 @@ def test_get_album_by_id() -> None:
 
     assert database_model_to_dict(album) == dict(
         id=album_id,
-        artist="The Beatles",
-        title="Abbey Road",
-        released="1969",
+        artist="Meat Loaf",
+        title="Bat Out of Hell",
+        released="1977",
         format="LP",
-        label="Apple",
+        label="Epic",
         notes=None,
         created_at=now.replace(tzinfo=None),
         updated_at=now.replace(tzinfo=None),
