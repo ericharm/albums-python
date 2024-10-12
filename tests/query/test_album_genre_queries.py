@@ -4,7 +4,7 @@ from tests.utils.albums import create_test_album
 
 
 def test_add_genre_to_album() -> None:
-    album = create_test_album(
+    fear_of_music = create_test_album(
         artist="Talking Heads",
         title="Fear of Music",
         released="1979",
@@ -13,10 +13,12 @@ def test_add_genre_to_album() -> None:
         notes=None,
     )
 
-    new_wave_genre = genre_queries.create_genre("New Wave")
-    album_genre_queries.add_genre_to_album(album, new_wave_genre)
+    new_wave = genre_queries.create_genre("New Wave")
 
     with get_db_session() as session:
-        album = session.merge(album)
-        album_genres = [genre.to_dict() for genre in album.genres]
-        assert album_genres == [dict(id=new_wave_genre.id, name="New Wave")]
+        fear_of_music = session.merge(fear_of_music)
+        new_wave = session.merge(new_wave)
+        album_genre_queries.add_genre_to_album(fear_of_music, new_wave)
+
+    album_genres = [genre.to_dict() for genre in fear_of_music.genres]
+    assert album_genres == [dict(id=new_wave.id, name="New Wave")]

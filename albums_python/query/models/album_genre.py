@@ -1,12 +1,11 @@
-from sqlalchemy import ForeignKey, Integer
-from sqlalchemy.orm import Mapped, mapped_column
+from sqlalchemy import Column, ForeignKey, Integer, Table
 
 from albums_python.query.models.model import Model
 
-
-class AlbumGenre(Model):
-    __tablename__ = "album_genres"
-
-    id: Mapped[int] = mapped_column(Integer, primary_key=True, autoincrement=True)
-    album_id: Mapped[int] = mapped_column(Integer, ForeignKey("albums.id"), nullable=False)
-    genre_id: Mapped[int] = mapped_column(Integer, ForeignKey("genres.id"), nullable=False)
+album_genres_table = Table(
+    "album_genres",
+    Model.metadata,
+    Column("id", Integer, primary_key=True, autoincrement=True),
+    Column("album_id", Integer, ForeignKey("albums.id"), nullable=False),
+    Column("genre_id", Integer, ForeignKey("genres.id"), nullable=False),
+)

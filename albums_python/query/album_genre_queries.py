@@ -1,11 +1,14 @@
-from albums_python.client.database import get_db_session
+from typing import Optional
+
+from sqlalchemy.orm import Session
+
 from albums_python.query.models.album import Album
 from albums_python.query.models.genre import Genre
+from albums_python.query.session import use_session
 
 
-def add_genre_to_album(album: Album, genre: Genre) -> None:
-    with get_db_session() as session:
-        album = session.merge(album)
-        genre = session.merge(genre)
-        album.genres.append(genre)
-        session.commit()
+@use_session
+def add_genre_to_album(album: Album, genre: Genre, session: Optional[Session] = None) -> None:
+    assert session
+    album.genres.append(genre)
+    session.commit()

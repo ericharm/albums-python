@@ -1,8 +1,7 @@
 from sqlalchemy import Integer, String
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
-from albums_python.defs.album_genres import ALBUM
-from albums_python.query.models.album_genre import AlbumGenre
+from albums_python.query.models.album_genre import album_genres_table
 from albums_python.query.models.model import Model
 
 
@@ -12,8 +11,8 @@ class Genre(Model):
     id: Mapped[int] = mapped_column(Integer, primary_key=True, autoincrement=True)
     name: Mapped[str] = mapped_column(String, nullable=False)
 
-    albums: Mapped[list[ALBUM]] = relationship(  # type: ignore
-        "Album", secondary=AlbumGenre.__table__, back_populates="genres", lazy="joined"
+    albums: Mapped[list["Album"]] = relationship(  # type: ignore
+        "Album", secondary=album_genres_table, back_populates="genres"
     )
 
     def __repr__(self) -> str:

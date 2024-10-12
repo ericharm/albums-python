@@ -3,9 +3,8 @@ from datetime import datetime
 from sqlalchemy import DateTime, Integer, String
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
-from albums_python.defs.album_genres import GENRE
 from albums_python.domain.utils import current_utc_datetime
-from albums_python.query.models.album_genre import AlbumGenre
+from albums_python.query.models.album_genre import album_genres_table
 from albums_python.query.models.model import Model
 
 
@@ -31,8 +30,8 @@ class Album(Model):
         nullable=False,
     )
 
-    genres: Mapped[list[GENRE]] = relationship(  # type: ignore
-        "Genre", secondary=AlbumGenre.__table__, back_populates="albums", lazy="joined"
+    genres: Mapped[list["Genre"]] = relationship(  # type: ignore
+        "Genre", secondary=album_genres_table, back_populates="albums"
     )
 
     def __repr__(self) -> str:

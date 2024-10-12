@@ -1,8 +1,10 @@
 from typing import Optional
 
+from sqlalchemy.orm import Session
+
 from albums_python.client.database import get_db_session
-from albums_python.domain.utils import current_utc_datetime
 from albums_python.query.models.user import User
+from albums_python.query.session import use_session
 
 
 def get_user_by_email(email: str) -> Optional[User]:
@@ -10,16 +12,18 @@ def get_user_by_email(email: str) -> Optional[User]:
         return session.query(User).filter_by(email=email).first()
 
 
+@use_session
 def create_user(
     email: str,
     encrypted_password: str,
+    session: Optional[Session] = None,
 ) -> User:
-    now = current_utc_datetime()
+    assert session
     user = User(
         email=email,
         encrypted_password=encrypted_password,
-        created_at=now,
-        updated_at=now,
     )
 
-    return user.save()
+    session.add(user)
+    session.commit()
+    return user
