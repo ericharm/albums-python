@@ -4,7 +4,7 @@ from albums_python.domain.utils import current_utc_datetime
 from albums_python.query import album_queries
 from albums_python.query.models.album import Album
 from tests.utils.albums import create_test_album
-from tests.utils.base import clear_table, database_model_to_dict
+from tests.utils.base import clear_table
 
 
 def test_create_album() -> None:
@@ -23,7 +23,7 @@ def test_create_album() -> None:
         assert album is not None
         assert album.id is not None
 
-        assert database_model_to_dict(album) == dict(
+        assert album.to_dict() == dict(
             id=album.id,
             artist="John Prine",
             title="Bruised Orange",
@@ -54,7 +54,7 @@ def test_get_album_by_id() -> None:
     album = album_queries.get_album_by_id(album_id)
     assert album is not None
 
-    assert database_model_to_dict(album) == dict(
+    assert album.to_dict() == dict(
         id=album_id,
         artist="Meat Loaf",
         title="Bat Out of Hell",
@@ -97,7 +97,7 @@ def test_get_albums_page() -> None:
     assert len(albums) == 1
     album, *_ = albums
 
-    assert database_model_to_dict(album) == dict(
+    assert album.to_dict() == dict(
         id=album_id,
         artist="The Beatles",
         title="Abbey Road",
