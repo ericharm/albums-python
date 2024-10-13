@@ -28,8 +28,8 @@ def test_login_user(faker: Faker) -> None:
             id=user.id,
             email=user.email,
             token=mock_jwt,
-            created_at=now.replace(tzinfo=None),
-            updated_at=now.replace(tzinfo=None),
+            created_at=now,
+            updated_at=now,
         )
 
 

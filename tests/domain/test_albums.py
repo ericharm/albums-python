@@ -40,7 +40,8 @@ def test_get_albums_page() -> None:
         title="Bad Hair Day",
         format="CD",
         label="Scotti Bros.",
-        created_at=now.replace(tzinfo=None),
-        updated_at=now.replace(tzinfo=None),
+        created_at=now,
+        updated_at=now,
         notes=None,
+        genres=[],
     )

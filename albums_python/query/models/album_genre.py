@@ -1,11 +1,9 @@
-from sqlalchemy import Column, ForeignKey, Integer, Table
-
+from peewee import ForeignKeyField
+from albums_python.query.models.album import Album
+from albums_python.query.models.genre import Genre
 from albums_python.query.models.model import Model
 
-album_genres_table = Table(
-    "album_genres",
-    Model.metadata,
-    Column("id", Integer, primary_key=True, autoincrement=True),
-    Column("album_id", Integer, ForeignKey("albums.id"), nullable=False),
-    Column("genre_id", Integer, ForeignKey("genres.id"), nullable=False),
-)
+
+class AlbumGenre(Model):
+    album = ForeignKeyField(Album, backref="album_genres")
+    genre = ForeignKeyField(Genre, backref="genre_albums")

@@ -34,6 +34,7 @@ class AlbumResponse:
     created_at: datetime
     updated_at: datetime
     notes: Optional[str]
+    genres: list[str]
 
     @staticmethod
     def from_album(album: Album) -> AlbumResponse:
@@ -47,6 +48,7 @@ class AlbumResponse:
             created_at=album.created_at,
             updated_at=album.updated_at,
             notes=album.notes,
+            genres=[genre.name for genre in album.genres],
         )
 
 

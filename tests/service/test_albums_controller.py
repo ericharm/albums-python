@@ -1,4 +1,4 @@
-from unittest.mock import ANY, patch
+from unittest.mock import patch
 
 from freezegun import freeze_time
 
@@ -42,8 +42,9 @@ def test_albums_index(client: TestClient) -> None:
                     format="LP",
                     label="Parlophone",
                     notes=None,
-                    created_at=now.replace(tzinfo=None).isoformat(),
-                    updated_at=now.replace(tzinfo=None).isoformat(),
+                    genres=[],
+                    created_at=now.isoformat(),
+                    updated_at=now.isoformat(),
                 )
             ],
         )
@@ -74,12 +75,13 @@ def test_show_album(client: TestClient) -> None:
             format="LP",
             label="Elektra",
             notes=None,
-            created_at=now.replace(tzinfo=None).isoformat(),
-            updated_at=now.replace(tzinfo=None).isoformat(),
+            genres=[],
+            created_at=now.isoformat(),
+            updated_at=now.isoformat(),
         )
 
 
-def test_create_album(client: TestClient) -> None:
+def test_create_album_endpoint(client: TestClient) -> None:
     user = create_test_user()
     jwt = _generate_jwt(str(user.id))
     now = current_utc_datetime()
@@ -99,14 +101,16 @@ def test_create_album(client: TestClient) -> None:
         )
 
         assert response.status_code == 201
+        assert response.json
         assert response.json == dict(
-            id=ANY,
+            id=response.json["id"],
             artist="The Velvet Underground",
             title="The Velvet Underground & Nico",
             released="1967",
             format="LP",
             label="Verve",
             notes=None,
+            genres=[],
             created_at=now.isoformat(),
             updated_at=now.isoformat(),
         )

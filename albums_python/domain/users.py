@@ -1,4 +1,4 @@
-import datetime
+from datetime import timedelta
 from typing import Optional
 
 import jwt
@@ -44,7 +44,7 @@ def register_user(email: str, password: str) -> Optional[UserResponse]:
 def _generate_jwt(user_id: str) -> str:
     payload = dict(
         user_id=user_id,
-        exp=current_utc_datetime() + datetime.timedelta(hours=1),
+        exp=current_utc_datetime() + timedelta(hours=1),
     )
     return jwt.encode(payload, SECRET_KEY, algorithm=JWT_ALGORITHM)
 

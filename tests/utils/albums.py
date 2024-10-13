@@ -1,15 +1,11 @@
-from typing import Any, Optional
+from typing import Any
 
 from faker import Faker
-from sqlalchemy.orm import Session
 
 from albums_python.query.models.album import Album
-from albums_python.query.session import use_session
 
 
-@use_session
-def create_test_album(session: Optional[Session] = None, **kwargs: Any) -> Album:
-    assert session
+def create_test_album(**kwargs: Any) -> Album:
     fake = Faker()
 
     album = Album(
@@ -24,6 +20,5 @@ def create_test_album(session: Optional[Session] = None, **kwargs: Any) -> Album
     for key, value in kwargs.items():
         setattr(album, key, value)
 
-    session.add(album)
-    session.commit()
+    album.save()
     return album

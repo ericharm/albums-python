@@ -43,6 +43,6 @@ def test_get_user_by_email() -> None:
         id=user.id,
         email=user.email,
         encrypted_password=user.encrypted_password,
-        created_at=now.replace(tzinfo=None),
-        updated_at=now.replace(tzinfo=None),
+        created_at=now,
+        updated_at=now,
     )

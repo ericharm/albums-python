@@ -49,6 +49,6 @@ def test_login_user(faker: Faker, client: TestClient):
             id=user.id,
             email=user.email,
             token=mock_jwt,
-            created_at=now.replace(tzinfo=None).isoformat(),
-            updated_at=now.replace(tzinfo=None).isoformat(),
+            created_at=now.isoformat(),
+            updated_at=now.isoformat(),
         )

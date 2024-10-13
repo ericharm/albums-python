@@ -62,8 +62,8 @@ def test_get_album_by_id() -> None:
         format="LP",
         label="Epic",
         notes=None,
-        created_at=now.replace(tzinfo=None),
-        updated_at=now.replace(tzinfo=None),
+        created_at=now,
+        updated_at=now,
     )
 
 
@@ -105,6 +105,6 @@ def test_get_albums_page() -> None:
         format="LP",
         label="Apple",
         notes=None,
-        created_at=now.replace(tzinfo=None),
-        updated_at=now.replace(tzinfo=None),
+        created_at=now,
+        updated_at=now,
     )

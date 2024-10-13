@@ -1,4 +1,3 @@
-from albums_python.client.database import get_db_session
 from albums_python.query import album_genre_queries, genre_queries
 from tests.utils.albums import create_test_album
 
@@ -15,10 +14,6 @@ def test_add_genre_to_album() -> None:
 
     new_wave = genre_queries.create_genre("New Wave")
 
-    with get_db_session() as session:
-        fear_of_music = session.merge(fear_of_music)
-        new_wave = session.merge(new_wave)
-        album_genre_queries.add_genre_to_album(fear_of_music, new_wave)
-
-    album_genres = [genre.to_dict() for genre in fear_of_music.genres]
-    assert album_genres == [dict(id=new_wave.id, name="New Wave")]
+    album_genre_queries.add_genre_to_album(fear_of_music, new_wave)
+    assert [genre.name for genre in fear_of_music.genres] == ["New Wave"]
+    assert [album.title for album in new_wave.albums] == ["Fear of Music"]
