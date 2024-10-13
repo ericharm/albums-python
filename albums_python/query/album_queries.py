@@ -1,6 +1,6 @@
 from typing import Optional
 
-from sqlalchemy.orm import Session
+from sqlalchemy.orm import Session, subqueryload
 
 from albums_python.query.models.album import Album
 from albums_python.query.session import use_session
@@ -34,7 +34,8 @@ def create_album(
 @use_session
 def get_album_by_id(album_id: int, session: Optional[Session] = None) -> Optional[Album]:
     assert session
-    return session.get(Album, album_id)
+    album = session.query(Album).options(subqueryload(Album.genres)).filter_by(id=album_id).first()
+    return album
 
 
 @use_session
