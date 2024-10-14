@@ -8,8 +8,13 @@
 # TODO
 
 - Albums
+    - Default albums response should be alphabetized by Artist
+    - Let's make sure we're not doing n + 1 to get genres
     - PUT albums/{album_id}
     - fuzzy find across albums columns (including genres?)
+    - Sort by any column
+    - Delete album
+    - Format enum
 
 - Genres
     - Set genres at album creation
@@ -21,4 +26,8 @@
     - Find a way to run it in AWS lambda
 
 - UI
-    - Complete, tested client layer with example json responses
+    - Handle API errors
+    - Store the expiration of the JWT and force refresh
+    - Search
+    - Edit album
+    - Delete album

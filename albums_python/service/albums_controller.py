@@ -1,4 +1,4 @@
-from flask import Blueprint
+from flask import Blueprint, request
 from webargs.flaskparser import use_args
 
 from albums_python.domain import albums as albums_domain
@@ -17,8 +17,8 @@ albums_blueprint = Blueprint("albums", __name__)
 
 
 @albums_blueprint.get("/albums")
-@use_args(PaginatedRequestSchema)
-def index(page_data: PaginatedRequest) -> Response:
+def index() -> Response:
+    page_data: PaginatedRequest = PaginatedRequestSchema.load(request.args)
     result = albums_domain.get_albums_page(page=page_data.page, page_size=page_data.page_size)
     return AlbumsIndexResponseSchema.dump(result)
 
