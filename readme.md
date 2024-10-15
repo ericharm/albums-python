@@ -8,26 +8,25 @@
 # TODO
 
 - Albums
-    - Default albums response should be alphabetized by Artist
-    - Let's make sure we're not doing n + 1 to get genres
-    - PUT albums/{album_id}
-    - fuzzy find across albums columns (including genres?)
+    - PUT albums/<album_id>
+    - DELETE albums/<album_id>
+    - Search albums
     - Sort by any column
-    - Delete album
     - Format enum
+    - make sure every function gets a test
 
 - Genres
     - Set genres at album creation
-    - Album GET endpoints return genres
-    - Get albums by genre
+    - POST and DELETE album_genres/<association_id>
+    - GET genres/<genre_id>
 
 - Deployment
     - Production WSGI
     - Find a way to run it in AWS lambda
+    - Disable CORS in production
 
 - UI
-    - Handle API errors
-    - Store the expiration of the JWT and force refresh
     - Search
     - Edit album
     - Delete album
+    - Format Enum

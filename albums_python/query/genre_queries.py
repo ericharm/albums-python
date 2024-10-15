@@ -7,3 +7,7 @@ def create_genre(
     return Genre.create(
         name=name,
     )
+
+
+def get_genres_by_id(genre_ids: list[int]) -> list[Genre]:
+    return Genre.select().where(Genre.id.in_(genre_ids))  # type: ignore

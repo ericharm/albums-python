@@ -1001,14 +1001,14 @@ files = [
 
 [[package]]
 name = "types-peewee"
-version = "3.17.6.20240813"
+version = "3.17.6.20241014"
 description = "Typing stubs for peewee"
 category = "dev"
 optional = false
 python-versions = ">=3.8"
 files = [
-    {file = "types-peewee-3.17.6.20240813.tar.gz", hash = "sha256:54cf5705e07805b9c742b3d5c653a3fdc7818a538ab4c0c7cfa459c5b1569734"},
-    {file = "types_peewee-3.17.6.20240813-py3-none-any.whl", hash = "sha256:418a834fb379e4a8a74773fe205cfbd921d781d2a9ad46b5e8ba184986e599b3"},
+    {file = "types-peewee-3.17.6.20241014.tar.gz", hash = "sha256:9ce4d62e2229a4d129da727dfc35f85c1b5a83f6821ac68511977ea06d8a2075"},
+    {file = "types_peewee-3.17.6.20241014-py3-none-any.whl", hash = "sha256:9d025e4d9877b4b4f6adb56f18f3f7e9a5a72046330b2741f344d192b1902e8f"},
 ]
 
 [[package]]

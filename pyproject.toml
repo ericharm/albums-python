@@ -50,6 +50,7 @@ line_length = 100
 [tool.mypy]
 exclude = 'albums_python/query/models/.*'
 disallow_untyped_defs = true
+mypy_path = ["albums_python/stubs"]
 
 [build-system]
 requires = ["poetry-core"]

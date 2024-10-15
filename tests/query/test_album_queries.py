@@ -1,9 +1,10 @@
+from faker import Faker
 from freezegun import freeze_time
 
+from albums_python.defs.constants import DEFAULT_NONE
 from albums_python.domain.utils import current_utc_datetime
 from albums_python.query import album_queries
 from albums_python.query.models.album import Album
-from tests.utils.albums import create_test_album
 from tests.utils.base import clear_table
 
 
@@ -36,12 +37,54 @@ def test_create_album() -> None:
         )
 
 
+def test_update_album() -> None:
+    then = current_utc_datetime()
+    album_id = 0
+
+    with freeze_time(then):
+        album = album_queries.create_album(
+            artist="George Harrison",
+            title="All Things Must Pass",
+            released="1970",
+            format="LP",
+            label="Apple",
+            notes=None,
+        )
+        album_id = album.id
+
+    now = current_utc_datetime()
+    with freeze_time(now):
+        album = album_queries.update_album(
+            album=album,
+            artist=DEFAULT_NONE,
+            title=DEFAULT_NONE,
+            released=DEFAULT_NONE,
+            format=DEFAULT_NONE,
+            label=DEFAULT_NONE,
+            notes="A triple album",
+        )
+
+    album = album_queries.get_album_by_id(album_id)
+    assert album is not None
+    assert album.to_dict() == dict(
+        id=album_id,
+        artist="George Harrison",
+        title="All Things Must Pass",
+        released="1970",
+        format="LP",
+        label="Apple",
+        notes="A triple album",
+        created_at=then,
+        updated_at=now,
+    )
+
+
 def test_get_album_by_id() -> None:
     now = current_utc_datetime()
     album_id = 0
 
     with freeze_time(now):
-        album = create_test_album(
+        album = album_queries.create_album(
             artist="Meat Loaf",
             title="Bat Out of Hell",
             released="1977",
@@ -67,11 +110,18 @@ def test_get_album_by_id() -> None:
     )
 
 
-def test_get_albums_count() -> None:
+def test_get_albums_count(faker: Faker) -> None:
     clear_table(Album)
 
     for _ in range(8):
-        create_test_album()
+        album_queries.create_album(
+            artist=faker.text(),
+            title=faker.text(),
+            released=faker.year(),
+            format="LP",
+            label=faker.text(),
+            notes=None,
+        )
 
     assert album_queries.get_albums_count() == 8
 
@@ -83,7 +133,7 @@ def test_get_albums_page() -> None:
     album_id = 0
 
     with freeze_time(now):
-        album = create_test_album(
+        album = album_queries.create_album(
             artist="The Beatles",
             title="Abbey Road",
             released="1969",

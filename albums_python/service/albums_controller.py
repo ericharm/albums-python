@@ -23,7 +23,7 @@ def index() -> Response:
     return AlbumsIndexResponseSchema.dump(result)
 
 
-@albums_blueprint.get("/albums/<album_id>")
+@albums_blueprint.get("/albums/<int:album_id>")
 def show(album_id: int) -> Response:
     album = album_queries.get_album_by_id(album_id)
 
@@ -36,6 +36,22 @@ def show(album_id: int) -> Response:
 @albums_blueprint.post("/albums")
 @jwt_required
 @use_args(AlbumRequestSchema)
-def create(_: str, request: AlbumRequest) -> Response:
+def create(request: AlbumRequest, user_id: int) -> Response:
     album = album_queries.create_album(**AlbumRequestSchema.dump(request))
     return AlbumResponseSchema.dump(AlbumResponse.from_album(album)), 201
+
+
+@albums_blueprint.put("/albums/<int:album_id>")
+@jwt_required
+@use_args(AlbumRequestSchema)
+def update(
+    request: AlbumRequest,
+    album_id: int,
+    user_id: int,
+) -> Response:
+    album = albums_domain.update_album_from_request(album_id, request)
+
+    if album is None:
+        return dict(message=f"Album<{album_id} not found"), 404
+
+    return AlbumResponseSchema.dump(AlbumResponse.from_album(album))

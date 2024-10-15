@@ -7,12 +7,12 @@ class Genre(Model):
     class Meta:
         table_name = "genres"
 
-    id = IntegerField(primary_key=True)
-    name = CharField(null=False)
+    id: int = IntegerField(primary_key=True)
+    name: str = CharField(null=False)
 
     def __repr__(self) -> str:
         return f"Genre<id={self.id}, name={self.name}>"
 
     @property
-    def albums(self) -> list["AlbumGenre"]:
+    def albums(self) -> list["AlbumGenre"]:  # noqa: F821
         return [album_genre.album for album_genre in self.genre_albums]

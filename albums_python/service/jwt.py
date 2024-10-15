@@ -25,15 +25,15 @@ def jwt_required(func: Callable) -> Callable:
         if user_id is None:
             return dict(message="Invalid or expired token"), 403
 
-        return func(user_id, *args, **kwargs)
+        return func(*args, **kwargs, user_id=user_id)
 
     return decorated_function
 
 
-def _verify_jwt(token: str) -> Optional[str]:
+def _verify_jwt(token: str) -> Optional[int]:
     try:
         payload = jwt.decode(token, SECRET_KEY, algorithms=[JWT_ALGORITHM])
-        return payload["user_id"]
+        return int(payload["user_id"])
     except jwt.ExpiredSignatureError:
         return None
     except jwt.InvalidTokenError:

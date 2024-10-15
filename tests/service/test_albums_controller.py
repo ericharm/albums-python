@@ -4,9 +4,9 @@ from freezegun import freeze_time
 
 from albums_python.domain.users import _generate_jwt
 from albums_python.domain.utils import current_utc_datetime
+from albums_python.query import album_queries
 from albums_python.query.models.album import Album
 from tests.conftest import TestClient
-from tests.utils.albums import create_test_album
 from tests.utils.base import clear_table
 from tests.utils.users import create_test_user
 
@@ -16,7 +16,7 @@ def test_albums_index(client: TestClient) -> None:
     now = current_utc_datetime()
 
     with freeze_time(now):
-        create_test_album(
+        album_queries.create_album(
             artist="Gorillaz",
             title="Demon Days",
             released="2005",
@@ -55,14 +55,15 @@ def test_show_album(client: TestClient) -> None:
     album_id = None
 
     with freeze_time(now):
-        album_id = create_test_album(
+        album = album_queries.create_album(
             artist="Television",
             title="Marquee Moon",
             released="1977",
             format="LP",
             label="Elektra",
             notes=None,
-        ).id
+        )
+        album_id = album.id
 
     with client() as c:
         response = c.get(f"/albums/{album_id}")
@@ -114,3 +115,71 @@ def test_create_album_endpoint(client: TestClient) -> None:
             created_at=now.isoformat(),
             updated_at=now.isoformat(),
         )
+
+
+def test_update_album_endpoint(client: TestClient) -> None:
+    user = create_test_user()
+    then = current_utc_datetime()
+    album_id = 0
+
+    with freeze_time(then):
+        album = album_queries.create_album(
+            artist="Billy Joe",
+            title="The Strangler",
+            released="1977",
+            format="LP",
+            label="Columbia",
+            notes=None,
+        )
+        album_id = album.id
+
+    jwt = _generate_jwt(str(user.id))
+    now = current_utc_datetime()
+    with freeze_time(now):
+        response = client().put(
+            f"/albums/{album_id}",
+            json=dict(
+                artist="Billy Joel",
+                title="The Stranger",
+                released="1977",
+                format="LP",
+                label="Columbia",
+                notes="This is a great album",
+            ),
+            headers=dict(Authorization=f"Bearer {jwt}"),
+        )
+        assert response.status_code == 200
+        assert response.json
+        assert response.json == dict(
+            id=album_id,
+            artist="Billy Joel",
+            title="The Stranger",
+            released="1977",
+            format="LP",
+            label="Columbia",
+            notes="This is a great album",
+            genres=[],
+            created_at=then.isoformat(),
+            updated_at=now.isoformat(),
+        )
+
+
+def test_update_album_endpoint_not_found(client: TestClient) -> None:
+    user = create_test_user()
+    album_id = 0
+    jwt = _generate_jwt(str(user.id))
+
+    response = client().put(
+        f"/albums/{album_id}",
+        json=dict(
+            artist="Billy Joel",
+            title="The Stranger",
+            released="1977",
+            format="LP",
+            label="Columbia",
+            notes="This is a great album",
+        ),
+        headers=dict(Authorization=f"Bearer {jwt}"),
+    )
+    assert response.status_code == 404
+    assert response.json == dict(message=f"Album<{album_id} not found")
