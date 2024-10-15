@@ -8,7 +8,6 @@
 # TODO
 
 - Albums
-    - DELETE albums/<album_id>
     - Search albums
     - Sort by any column
     - Format enum?
@@ -24,7 +23,7 @@
     - Disable CORS in production
 
 - UI
-    - Search
+    - Search (with debounce)
     - Edit album
     - Delete album
     - Format Enum
