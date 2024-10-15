@@ -183,3 +183,45 @@ def test_update_album_endpoint_not_found(client: TestClient) -> None:
     )
     assert response.status_code == 404
     assert response.json == dict(message=f"Album<{album_id} not found")
+
+
+def test_delete_album_endpoint(client: TestClient) -> None:
+    user = create_test_user()
+    then = current_utc_datetime()
+    album_id = 0
+
+    with freeze_time(then):
+        album = album_queries.create_album(
+            artist="Curtis Mayfield",
+            title="Super Fly",
+            released="1972",
+            format="LP",
+            label="Curtom",
+            notes=None,
+        )
+        album_id = album.id
+
+    jwt = _generate_jwt(str(user.id))
+    response = client().delete(
+        f"/albums/{album_id}",
+        headers=dict(Authorization=f"Bearer {jwt}"),
+    )
+
+    assert response.status_code == 200
+    assert response.json == dict()
+    assert album_queries.get_album_by_id(album_id) is None
+
+
+def test_delete_album_endpoint_not_found(client: TestClient) -> None:
+    user = create_test_user()
+    album_id = 0
+
+    jwt = _generate_jwt(str(user.id))
+    response = client().delete(
+        f"/albums/{album_id}",
+        headers=dict(Authorization=f"Bearer {jwt}"),
+    )
+
+    assert response.status_code == 404
+    assert response.json
+    assert response.json == dict(message=f"Album<{album_id} not found")

@@ -1,15 +1,7 @@
-from typing import Optional
-
-from peewee import DoesNotExist, prefetch
+from peewee import prefetch
 
 from albums_python.query import album_genre_queries, album_queries, genre_queries
-from albums_python.query.models.album import Album
-from albums_python.service.models.album_schemas import (
-    AlbumRequest,
-    AlbumRequestSchema,
-    AlbumResponse,
-    AlbumsIndexResponse,
-)
+from albums_python.service.models.album_schemas import AlbumResponse, AlbumsIndexResponse
 
 
 def get_albums_page(page: int = 1, page_size: int = 10) -> AlbumsIndexResponse:
@@ -31,13 +23,3 @@ def get_albums_page(page: int = 1, page_size: int = 10) -> AlbumsIndexResponse:
         total_count=total_count,
         albums=[AlbumResponse.from_album(album) for album in albums_with_genres],
     )
-
-
-def update_album_from_request(album_id: int, request: AlbumRequest) -> Optional[Album]:
-    try:
-        album = album_queries.get_album_by_id(album_id)
-    except DoesNotExist:
-        return None
-
-    album = album_queries.update_album(album=album, **AlbumRequestSchema.dump(request))
-    return album

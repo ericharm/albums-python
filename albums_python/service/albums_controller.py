@@ -49,9 +49,23 @@ def update(
     album_id: int,
     user_id: int,
 ) -> Response:
-    album = albums_domain.update_album_from_request(album_id, request)
+    album = album_queries.get_album_by_id(album_id)
 
     if album is None:
         return dict(message=f"Album<{album_id} not found"), 404
 
+    album = album_queries.update_album(album=album, **AlbumRequestSchema.dump(request))
     return AlbumResponseSchema.dump(AlbumResponse.from_album(album))
+
+
+@albums_blueprint.delete("/albums/<int:album_id>")
+@jwt_required
+def delete(album_id: int, user_id: int) -> Response:
+    album = album_queries.get_album_by_id(album_id)
+
+    if album is None:
+        return dict(message=f"Album<{album_id} not found"), 404
+
+    album_queries.delete_album(album)
+
+    return dict(), 200

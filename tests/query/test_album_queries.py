@@ -158,3 +158,25 @@ def test_get_albums_page() -> None:
         created_at=now,
         updated_at=now,
     )
+
+
+def test_delete_album() -> None:
+    now = current_utc_datetime()
+    album_id = 0
+    with freeze_time(now):
+        album = album_queries.create_album(
+            artist="Led Zeppelin",
+            title="Led Zeppelin II",
+            released="1969",
+            format="LP",
+            label="Atlantic",
+            notes=None,
+        )
+        album_id = album.id
+
+    album = album_queries.get_album_by_id(album_id)
+    assert album is not None
+
+    album_queries.delete_album(album)
+    album = album_queries.get_album_by_id(album_id)
+    assert album is None

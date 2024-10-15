@@ -8,12 +8,10 @@
 # TODO
 
 - Albums
-    - PUT albums/<album_id>
     - DELETE albums/<album_id>
     - Search albums
     - Sort by any column
-    - Format enum
-    - make sure every function gets a test
+    - Format enum?
 
 - Genres
     - Set genres at album creation

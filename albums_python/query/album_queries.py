@@ -1,7 +1,24 @@
 from typing import Optional, Union
 
+from peewee import DoesNotExist
+
 from albums_python.defs.constants import DEFAULT_NONE
 from albums_python.query.models.album import Album
+
+
+def get_album_by_id(album_id: int) -> Optional[Album]:
+    try:
+        return Album.get_by_id(album_id)
+    except DoesNotExist:
+        return None
+
+
+def get_albums_page(page: int = 1, page_size: int = 10) -> list[Album]:
+    return Album.select().order_by(Album.artist).paginate(page, page_size)
+
+
+def get_albums_count() -> int:
+    return Album.select().count()
 
 
 def create_album(
@@ -50,13 +67,5 @@ def update_album(
     return album
 
 
-def get_album_by_id(album_id: int) -> Album:
-    return Album.get_by_id(album_id)
-
-
-def get_albums_page(page: int = 1, page_size: int = 10) -> list[Album]:
-    return Album.select().order_by(Album.artist).paginate(page, page_size)
-
-
-def get_albums_count() -> int:
-    return Album.select().count()
+def delete_album(album: Album) -> None:
+    album.delete_instance()
