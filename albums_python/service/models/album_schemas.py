@@ -7,7 +7,15 @@ from typing import Optional
 from marshmallow_dataclass import class_schema
 
 from albums_python.query.models.album import Album
-from albums_python.service.models.http import PaginatedResponse
+from albums_python.service.models.http import PaginatedRequest, PaginatedResponse
+
+
+@dataclass
+class SearchAlbumsRequest(PaginatedRequest):
+    query: Optional[str] = None
+
+
+SearchAlbumsRequestSchema = class_schema(SearchAlbumsRequest)()
 
 
 @dataclass

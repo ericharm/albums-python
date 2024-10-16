@@ -21,12 +21,12 @@ class Album(Model):
     created_at: datetime = DateTimeField(default=current_utc_datetime)
     updated_at: datetime = DateTimeField(default=current_utc_datetime)
 
+    def __repr__(self) -> str:
+        return f"Album<id={self.id}, artist={self.artist}, title={self.title}>"
+
     def save(self, *args, **kwargs) -> None:
         self.updated_at = current_utc_datetime()
         super().save(*args, **kwargs)
-
-    def __repr__(self) -> str:
-        return f"Album<id={self.id}, artist={self.artist}, title={self.title}>"
 
     @property
     def genres(self) -> list["AlbumGenre"]:  # noqa: F821

@@ -11,7 +11,7 @@ from albums_python.service.models.album_schemas import AlbumResponse, AlbumsInde
 from tests.utils.base import clear_table
 
 
-def test_get_albums_page(faker: Faker) -> None:
+def test_search_albums_empty_query(faker: Faker) -> None:
     clear_table(Album)
 
     for n in range(5):
@@ -38,7 +38,7 @@ def test_get_albums_page(faker: Faker) -> None:
             notes=None,
         )
 
-    albums_page = albums_domain.get_albums_page(page=2, page_size=5)
+    albums_page = albums_domain.search_albums(query=None, page=2, page_size=5)
     assert albums_page == AlbumsIndexResponse(
         page=2, page_size=5, total_pages=2, total_count=6, albums=ANY
     )

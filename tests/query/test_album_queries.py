@@ -8,6 +8,73 @@ from albums_python.query.models.album import Album
 from tests.utils.base import clear_table
 
 
+def test_fuzzy_search_albums() -> None:
+    clear_table(Album)
+
+    now = current_utc_datetime()
+    with freeze_time(now):
+        album_queries.create_album(
+            artist="The Beatles",
+            title="Abbey Road",
+            released="1969",
+            format="LP",
+            label="Apple",
+            notes=None,
+        )
+        album_queries.create_album(
+            artist="The Rolling Stones",
+            title="Sticky Fingers",
+            released="1971",
+            format="LP",
+            label="Rolling Stones",
+            notes=None,
+        )
+        album_queries.create_album(
+            artist="The Who",
+            title="Who's Next",
+            released="1971",
+            format="LP",
+            label="Decca",
+            notes=None,
+        )
+        album_queries.create_album(
+            artist="The Velvet Underground",
+            title="The Velvet Underground & Nico",
+            released="1967",
+            format="LP",
+            label="Verve",
+            notes=None,
+        )
+
+    albums: list[Album] = list(album_queries.fuzzy_search_albums("1971"))
+    albums.sort(key=lambda album: album.id)
+
+    assert [album.to_dict() for album in albums] == [
+        dict(
+            id=2,
+            artist="The Rolling Stones",
+            title="Sticky Fingers",
+            released="1971",
+            format="LP",
+            label="Rolling Stones",
+            notes=None,
+            created_at=now,
+            updated_at=now,
+        ),
+        dict(
+            id=3,
+            artist="The Who",
+            title="Who's Next",
+            released="1971",
+            format="LP",
+            label="Decca",
+            notes=None,
+            created_at=now,
+            updated_at=now,
+        ),
+    ]
+
+
 def test_create_album() -> None:
     now = current_utc_datetime()
 
@@ -126,7 +193,7 @@ def test_get_albums_count(faker: Faker) -> None:
     assert album_queries.get_albums_count() == 8
 
 
-def test_get_albums_page() -> None:
+def test_get_albums() -> None:
     clear_table(Album)
 
     now = current_utc_datetime()
@@ -143,7 +210,7 @@ def test_get_albums_page() -> None:
         )
         album_id = album.id
 
-    albums = album_queries.get_albums_page(page=1, page_size=10)
+    albums = album_queries.get_albums()
     assert len(albums) == 1
     album, *_ = albums
 

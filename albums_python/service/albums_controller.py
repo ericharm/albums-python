@@ -10,16 +10,22 @@ from albums_python.service.models.album_schemas import (
     AlbumResponse,
     AlbumResponseSchema,
     AlbumsIndexResponseSchema,
+    SearchAlbumsRequest,
+    SearchAlbumsRequestSchema,
 )
-from albums_python.service.models.http import PaginatedRequest, PaginatedRequestSchema, Response
+from albums_python.service.models.http import Response
 
 albums_blueprint = Blueprint("albums", __name__)
 
 
 @albums_blueprint.get("/albums")
 def index() -> Response:
-    page_data: PaginatedRequest = PaginatedRequestSchema.load(request.args)
-    result = albums_domain.get_albums_page(page=page_data.page, page_size=page_data.page_size)
+    search_albums_request: SearchAlbumsRequest = SearchAlbumsRequestSchema.load(request.args)
+    result = albums_domain.search_albums(
+        query=search_albums_request.query,
+        page=search_albums_request.page,
+        page_size=search_albums_request.page_size,
+    )
     return AlbumsIndexResponseSchema.dump(result)
 
 
