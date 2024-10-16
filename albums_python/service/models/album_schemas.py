@@ -2,9 +2,10 @@ from __future__ import annotations
 
 from dataclasses import dataclass
 from datetime import datetime
-from typing import Optional
+from typing import Optional, cast
 
 from marshmallow_dataclass import class_schema
+from peewee import CharField, IntegerField
 
 from albums_python.query.models.album import Album
 from albums_python.service.models.http import PaginatedRequest, PaginatedResponse
@@ -46,16 +47,16 @@ class AlbumResponse:
 
     @staticmethod
     def from_album(album: Album) -> AlbumResponse:
-        return AlbumResponse(
-            id=album.id,
-            artist=album.artist,
-            released=album.released,
-            title=album.title,
-            format=album.format,
-            label=album.label,
+        return AlbumResponse(  # type: ignore
+            id=_int_field_to_int(album.id),
+            artist=_char_field_to_str(album.artist),
+            released=_char_field_to_str(album.released),
+            title=f"{album.title}",
+            format=_char_field_to_str(album.format),
+            label=_char_field_to_str(album.label),
             created_at=album.created_at,
             updated_at=album.updated_at,
-            notes=album.notes,
+            notes=_char_field_to_str(album.notes),
             genres=[genre.name for genre in album.genres],
         )
 
@@ -69,3 +70,13 @@ class AlbumsIndexResponse(PaginatedResponse):
 
 
 AlbumsIndexResponseSchema = class_schema(AlbumsIndexResponse)()
+
+
+def _int_field_to_int(value: IntegerField) -> int:
+    return cast(int, value)
+
+
+def _char_field_to_str(value: CharField) -> Optional[str]:
+    if value is None:
+        return None
+    return f"{value}"

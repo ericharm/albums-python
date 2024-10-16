@@ -9,5 +9,5 @@ class AlbumGenre(Model):
     class Meta:
         table_name = "album_genres"
 
-    album: int = ForeignKeyField(Album, backref="album_genres")
-    genre: int = ForeignKeyField(Genre, backref="genre_albums")
+    album = ForeignKeyField(Album, backref="album_genres")
+    genre = ForeignKeyField(Genre, backref="genre_albums")

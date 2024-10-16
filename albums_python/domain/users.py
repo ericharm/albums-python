@@ -1,5 +1,5 @@
-from datetime import timedelta
-from typing import Optional
+from datetime import datetime, timedelta
+from typing import Optional, cast
 
 import jwt
 from passlib.hash import bcrypt
@@ -13,14 +13,16 @@ from albums_python.service.models.user_schemas import UserResponse
 def login_user(email: str, password: str) -> Optional[UserResponse]:
     user = get_user_by_email(email=email)
 
-    if user and _verify_password(password=password, encrypted_password=user.encrypted_password):
+    if user and _verify_password(
+        password=password, encrypted_password=f"{user.encrypted_password}"
+    ):
         token = _generate_jwt(str(user.id))
         return UserResponse(
-            id=user.id,
-            email=user.email,
+            id=cast(int, user.id),
+            email=f"{user.email}",
             token=token,
-            created_at=user.created_at,
-            updated_at=user.updated_at,
+            created_at=cast(datetime, user.created_at),
+            updated_at=cast(datetime, user.updated_at),
         )
 
     return None
@@ -33,11 +35,11 @@ def register_user(email: str, password: str) -> Optional[UserResponse]:
     user = create_user(email=email, encrypted_password=_encrypt_password(password))
     token = _generate_jwt(str(user.id))
     return UserResponse(
-        id=user.id,
-        email=user.email,
+        id=cast(int, user.id),
+        email=f"{user.email}",
         token=token,
-        created_at=user.created_at,
-        updated_at=user.updated_at,
+        created_at=cast(datetime, user.created_at),
+        updated_at=cast(datetime, user.updated_at),
     )
 
 

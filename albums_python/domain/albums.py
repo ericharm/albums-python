@@ -1,4 +1,4 @@
-from typing import Optional
+from typing import Optional, cast
 
 from peewee import prefetch
 
@@ -19,7 +19,7 @@ def search_albums(query: Optional[str], page: int, page_size: int) -> AlbumsInde
 
     album_genres = album_genre_queries.get_genres_for_albums(albums=list(albums))
     genres = genre_queries.get_genres_by_id(
-        genre_ids=[album_genre.genre for album_genre in album_genres]
+        genre_ids=[cast(int, album_genre.genre) for album_genre in album_genres]
     )
     albums_with_genres = prefetch(albums, album_genres, genres)
 

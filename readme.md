@@ -8,7 +8,7 @@
 # TODO
 
 - Albums
-    - Search albums (discrete tests)
+    - Search albums tests
     - Sort by any column
     - Format enum?
 
@@ -26,10 +26,10 @@
     - Disable CORS in production
 
 - UI
-    - Search (with debounce)
     - Edit album
     - Delete album
     - The Genre select input with the pills
     - Format Enum
+    - Search on debounce?
     - Automated deploy to S3?
     - Genre page (will this be the only page besides AlbumsPage?)
