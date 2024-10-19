@@ -23,6 +23,7 @@ webargs = "^8.6.0"
 python-dotenv = "^1.0.1"
 flask-cors = "^5.0.0"
 peewee = "^3.17.6"
+psycopg2-binary = "^2.9.10"
 
 [tool.poetry.dev-dependencies]
 faker = "^30.3.0"
