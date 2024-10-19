@@ -2,3 +2,5 @@ __pycache__/
 *.pyc
 *.env
 .coverage
+zappa_settings.json
+requirements.txt

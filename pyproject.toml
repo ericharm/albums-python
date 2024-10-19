@@ -33,6 +33,7 @@ pytest-cov = "^5.0.0"
 types-passlib = "^1.7.7.20240819"
 types-peewee = "^3.17.6.20240813"
 types-python-dateutil = "^2.9.0.20241003"
+zappa = "^0.59.0"
 
 [tool.pytest.ini_options]
 addopts = "-v --cov=albums_python --cov-report=term-missing"
