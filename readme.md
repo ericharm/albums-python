@@ -8,28 +8,33 @@
 # TODO
 
 - Albums
-    - Search albums tests
     - Sort by any column
     - Format enum?
 
 - Genres
     - GET /genres
     - POST /genres
+    - POST and DELETE album_genres/<association_id>
+
+    - Set genres at album creation
     - GET genres/<genre_id> (Don't think the original app had this feature)
         - Paginated
-    - POST and DELETE album_genres/<association_id>
-    - Set genres at album creation
 
 - Deployment
     - Production WSGI
     - Find a way to run it in AWS lambda
     - Disable CORS in production
+    - Automate frontend deployment to S3?
 
 - UI
-    - Edit album
-    - Delete album
+    - Auto logout on 403 response (include error toast)
+        - [x] Delete album
+        - [ ] Create album
+        - [ ] Update album
     - The Genre select input with the pills
+    - Add/remove genres from album
+
+    - Add genres to album with creation request
     - Format Enum
-    - Search on debounce?
-    - Automated deploy to S3?
     - Genre page (will this be the only page besides AlbumsPage?)
+    - Search on debounce?

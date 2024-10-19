@@ -1,7 +1,7 @@
 [tool.poetry]
 name = "albums-python"
 version = "0.1.0"
-description = ""
+description = "API for a record collection"
 authors = ["Eric Harm <ericharm@gmail.com>"]
 readme = "readme.md"
 packages = [{include = "albums_python"}]

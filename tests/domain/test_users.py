@@ -1,4 +1,5 @@
 from dataclasses import asdict
+from datetime import timedelta
 from unittest.mock import patch
 
 from faker import Faker
@@ -14,13 +15,14 @@ def test_login_user(faker: Faker) -> None:
     password = faker.password()
 
     now = current_utc_datetime()
+    later = now + timedelta(hours=1)
 
     with freeze_time(now):
         user = create_test_user(email=email, password=password)
 
     with patch("albums_python.domain.users._generate_jwt") as mock_generate_jwt:
         mock_jwt = faker.sha256()
-        mock_generate_jwt.return_value = mock_jwt
+        mock_generate_jwt.return_value = mock_jwt, later
 
         user_response = users_domain.login_user(email=email, password=password)
         assert user_response is not None
@@ -28,6 +30,7 @@ def test_login_user(faker: Faker) -> None:
             id=user.id,
             email=user.email,
             token=mock_jwt,
+            token_expiration=later,
             created_at=now,
             updated_at=now,
         )
@@ -47,10 +50,11 @@ def test_register_user(faker: Faker) -> None:
     password = faker.password()
 
     now = current_utc_datetime()
+    later = now + timedelta(hours=1)
 
     with freeze_time(now), patch("albums_python.domain.users._generate_jwt") as mock_generate_jwt:
         mock_jwt = faker.sha256()
-        mock_generate_jwt.return_value = mock_jwt
+        mock_generate_jwt.return_value = mock_jwt, later
 
         user_response = users_domain.register_user(email=email, password=password)
         assert user_response is not None
@@ -59,6 +63,7 @@ def test_register_user(faker: Faker) -> None:
             id=user_response.id,
             email=email,
             token=mock_jwt,
+            token_expiration=later,
             created_at=now,
             updated_at=now,
         )

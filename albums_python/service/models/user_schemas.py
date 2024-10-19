@@ -26,9 +26,10 @@ LoginUserRequestSchema = class_schema(LoginUserRequest)()
 class UserResponse:
     id: int
     email: str
+    token: str
+    token_expiration: datetime
     created_at: datetime
     updated_at: datetime
-    token: str
 
 
 UserResponseSchema = class_schema(UserResponse)()

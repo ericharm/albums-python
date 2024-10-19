@@ -1,3 +1,4 @@
+from functools import lru_cache
 from typing import Optional, cast
 
 from peewee import prefetch
@@ -6,6 +7,7 @@ from albums_python.query import album_genre_queries, album_queries, genre_querie
 from albums_python.service.models.album_schemas import AlbumResponse, AlbumsIndexResponse
 
 
+@lru_cache(maxsize=128)
 def search_albums(query: Optional[str], page: int, page_size: int) -> AlbumsIndexResponse:
     album_select = (
         album_queries.get_albums()

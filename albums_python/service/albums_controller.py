@@ -44,6 +44,7 @@ def show(album_id: int) -> Response:
 @use_args(AlbumRequestSchema)
 def create(request: AlbumRequest, user_id: int) -> Response:
     album = album_queries.create_album(**AlbumRequestSchema.dump(request))
+    albums_domain.search_albums.cache_clear()
     return AlbumResponseSchema.dump(AlbumResponse.from_album(album)), 201
 
 
@@ -61,6 +62,7 @@ def update(
         return dict(message=f"Album<{album_id} not found"), 404
 
     album = album_queries.update_album(album=album, **AlbumRequestSchema.dump(request))
+    albums_domain.search_albums.cache_clear()
     return AlbumResponseSchema.dump(AlbumResponse.from_album(album))
 
 
@@ -73,5 +75,5 @@ def delete(album_id: int, user_id: int) -> Response:
         return dict(message=f"Album<{album_id} not found"), 404
 
     album_queries.delete_album(album)
-
+    albums_domain.search_albums.cache_clear()
     return dict(), 200

@@ -16,11 +16,12 @@ def login_user(email: str, password: str) -> Optional[UserResponse]:
     if user and _verify_password(
         password=password, encrypted_password=f"{user.encrypted_password}"
     ):
-        token = _generate_jwt(str(user.id))
+        token, expiration = _generate_jwt(str(user.id))
         return UserResponse(
             id=cast(int, user.id),
             email=f"{user.email}",
             token=token,
+            token_expiration=expiration,
             created_at=cast(datetime, user.created_at),
             updated_at=cast(datetime, user.updated_at),
         )
@@ -33,22 +34,24 @@ def register_user(email: str, password: str) -> Optional[UserResponse]:
         return None
 
     user = create_user(email=email, encrypted_password=_encrypt_password(password))
-    token = _generate_jwt(str(user.id))
+    token, expiration = _generate_jwt(str(user.id))
     return UserResponse(
         id=cast(int, user.id),
         email=f"{user.email}",
         token=token,
+        token_expiration=expiration,
         created_at=cast(datetime, user.created_at),
         updated_at=cast(datetime, user.updated_at),
     )
 
 
-def _generate_jwt(user_id: str) -> str:
+def _generate_jwt(user_id: str) -> tuple[str, datetime]:
+    expiration = current_utc_datetime() + timedelta(hours=1)
     payload = dict(
         user_id=user_id,
-        exp=current_utc_datetime() + timedelta(hours=1),
+        exp=expiration,
     )
-    return jwt.encode(payload, SECRET_KEY, algorithm=JWT_ALGORITHM)
+    return jwt.encode(payload, SECRET_KEY, algorithm=JWT_ALGORITHM), expiration
 
 
 def _encrypt_password(password: str) -> str:

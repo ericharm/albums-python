@@ -124,11 +124,11 @@ def test_update_album() -> None:
         album = album_queries.update_album(
             album=album,
             artist=DEFAULT_NONE,
-            title=DEFAULT_NONE,
+            title="Some Things Might Pass",
             released=DEFAULT_NONE,
             format=DEFAULT_NONE,
             label=DEFAULT_NONE,
-            notes="A triple album",
+            notes=None,
         )
 
     album = album_queries.get_album_by_id(album_id)
@@ -136,11 +136,11 @@ def test_update_album() -> None:
     assert album.to_dict() == dict(
         id=album_id,
         artist="George Harrison",
-        title="All Things Must Pass",
+        title="Some Things Might Pass",
         released="1970",
         format="LP",
         label="Apple",
-        notes="A triple album",
+        notes=None,
         created_at=then,
         updated_at=now,
     )

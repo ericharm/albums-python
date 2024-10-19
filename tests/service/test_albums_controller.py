@@ -25,7 +25,7 @@ def test_albums_index(client: TestClient) -> None:
             notes=None,
         )
 
-    with patch("albums_python.service.albums_controller"), client() as c:
+    with client() as c:
         response = c.get("/albums", query_string=dict(page=1, page_size=10))
         assert response.status_code == 200
         assert response.json == dict(
@@ -41,6 +41,50 @@ def test_albums_index(client: TestClient) -> None:
                     released="2005",
                     format="LP",
                     label="Parlophone",
+                    notes=None,
+                    genres=[],
+                    created_at=now.isoformat(),
+                    updated_at=now.isoformat(),
+                )
+            ],
+        )
+
+
+def test_albums_index_with_query(client: TestClient) -> None:
+    now = current_utc_datetime()
+    with freeze_time(now):
+        album = album_queries.create_album(
+            artist="Marvin Gaye",
+            title="What's Going On",
+            released="1971",
+            format="LP",
+            label="Tamla",
+            notes=None,
+        )
+
+    with patch(
+        "albums_python.service.albums_controller.albums_domain.search_albums"
+    ) as mock_search_albums, client() as c:
+        mock_search_albums.return_value = dict(
+            page=1, page_size=10, total_pages=1, total_count=1, albums=[album]
+        )
+
+        response = c.get("/albums?query=marvin&page=1&page_size=8")
+        mock_search_albums.assert_called_once_with(query="marvin", page=1, page_size=8)
+        assert response.status_code == 200
+        assert response.json == dict(
+            page=1,
+            page_size=10,
+            total_pages=1,
+            total_count=1,
+            albums=[
+                dict(
+                    id=album.id,
+                    artist="Marvin Gaye",
+                    title="What's Going On",
+                    released="1971",
+                    format="LP",
+                    label="Tamla",
                     notes=None,
                     genres=[],
                     created_at=now.isoformat(),
@@ -84,7 +128,7 @@ def test_show_album(client: TestClient) -> None:
 
 def test_create_album_endpoint(client: TestClient) -> None:
     user = create_test_user()
-    jwt = _generate_jwt(str(user.id))
+    jwt, _ = _generate_jwt(str(user.id))
     now = current_utc_datetime()
 
     with freeze_time(now):
@@ -133,7 +177,7 @@ def test_update_album_endpoint(client: TestClient) -> None:
         )
         album_id = album.id
 
-    jwt = _generate_jwt(str(user.id))
+    jwt, _ = _generate_jwt(str(user.id))
     now = current_utc_datetime()
     with freeze_time(now):
         response = client().put(
@@ -167,7 +211,7 @@ def test_update_album_endpoint(client: TestClient) -> None:
 def test_update_album_endpoint_not_found(client: TestClient) -> None:
     user = create_test_user()
     album_id = 0
-    jwt = _generate_jwt(str(user.id))
+    jwt, _ = _generate_jwt(str(user.id))
 
     response = client().put(
         f"/albums/{album_id}",
@@ -201,7 +245,7 @@ def test_delete_album_endpoint(client: TestClient) -> None:
         )
         album_id = album.id
 
-    jwt = _generate_jwt(str(user.id))
+    jwt, _ = _generate_jwt(str(user.id))
     response = client().delete(
         f"/albums/{album_id}",
         headers=dict(Authorization=f"Bearer {jwt}"),
@@ -216,7 +260,7 @@ def test_delete_album_endpoint_not_found(client: TestClient) -> None:
     user = create_test_user()
     album_id = 0
 
-    jwt = _generate_jwt(str(user.id))
+    jwt, _ = _generate_jwt(str(user.id))
     response = client().delete(
         f"/albums/{album_id}",
         headers=dict(Authorization=f"Bearer {jwt}"),
