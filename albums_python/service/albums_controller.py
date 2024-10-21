@@ -26,6 +26,7 @@ def index() -> Response:
         page=search_albums_request.page,
         page_size=search_albums_request.page_size,
     )
+
     return AlbumsIndexResponseSchema.dump(result)
 
 

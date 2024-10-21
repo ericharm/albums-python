@@ -6,6 +6,7 @@ from albums_python.domain.users import _generate_jwt
 from albums_python.domain.utils import current_utc_datetime
 from albums_python.query import album_queries
 from albums_python.query.models.album import Album
+from albums_python.query.models.album_genre import AlbumGenre
 from tests.conftest import TestClient
 from tests.utils.base import clear_table
 from tests.utils.users import create_test_user
@@ -51,6 +52,9 @@ def test_albums_index(client: TestClient) -> None:
 
 
 def test_albums_index_with_query(client: TestClient) -> None:
+    clear_table(Album)
+    clear_table(AlbumGenre)
+
     now = current_utc_datetime()
     with freeze_time(now):
         album = album_queries.create_album(

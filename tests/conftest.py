@@ -6,6 +6,7 @@ from faker import Faker
 from flask import Flask
 from flask.testing import FlaskClient
 
+os.environ["ENV"] = "test"
 os.environ["DB_DRIVER"] = "sqlite"
 os.environ["DB_NAME"] = ":memory:"
 os.environ["SECRET_KEY"] = "secret"

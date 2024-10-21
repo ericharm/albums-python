@@ -1,3 +1,5 @@
+from faker import Faker
+
 from albums_python.query import album_genre_queries, album_queries, genre_queries
 
 
@@ -16,6 +18,57 @@ def test_add_genre_to_album() -> None:
 
     assert [genre.name for genre in fear_of_music.genres] == ["New Wave"]
     assert [album.title for album in new_wave.albums] == ["Fear of Music"]
+
+
+def test_remove_album_genre_association(faker: Faker) -> None:
+    rumours = album_queries.create_album(
+        artist="Fleetwood Mac",
+        title="Rumours",
+        released="1977",
+        format="LP",
+        label="Warner Bros.",
+        notes=None,
+    )
+
+    # Give the genres random name values to make testing easier
+    rock = genre_queries.create_genre(faker.word())
+    soft_rock = genre_queries.create_genre(faker.word())
+
+    rock_association = album_genre_queries.add_genre_to_album(album=rumours, genre=rock)
+    album_genre_queries.add_genre_to_album(album=rumours, genre=soft_rock)
+
+    album_genre_queries.remove_album_genre_association(rock_association)
+
+    # Rumours is only tagged with Soft Rock
+    assert [genre.name for genre in rumours.genres] == [soft_rock.name]
+    assert [album.title for album in soft_rock.albums] == ["Rumours"]
+
+    # No albums are tagged with Rock anymore
+    assert [album.title for album in rock.albums] == []
+
+
+def test_get_album_genre_association_by_id(faker: Faker) -> None:
+    album = album_queries.create_album(
+        artist="David Bowie",
+        title="The Rise and Fall of Ziggy Stardust and the Spiders from Mars",
+        released="1972",
+        format="LP",
+        label="RCA",
+        notes=None,
+    )
+
+    glam_rock = genre_queries.create_genre(faker.word())
+    album_genre = album_genre_queries.add_genre_to_album(album, glam_rock)
+
+    album_genre_association = album_genre_queries.get_album_genre_association_by_id(
+        album_genre_id=album_genre.id
+    )
+
+    assert album_genre_association.to_dict() == dict(
+        id=album_genre.id,
+        album=album.id,
+        genre=glam_rock.id,
+    )
 
 
 def test_get_genres_for_albums() -> None:
