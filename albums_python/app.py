@@ -23,8 +23,8 @@ def create_app() -> Flask:
         CORS(
             app,
             origins=[ALLOWED_HOSTS],
-            allow_headers=["Content-Type", "Authorization"],
-            methods=["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+            allow_headers=["*"],
+            methods=["*"],
         )
 
     return app
