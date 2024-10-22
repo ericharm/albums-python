@@ -1,8 +1,6 @@
 from flask import Flask
 from flask_cors import CORS
 
-from albums_python.defs.env import ALLOWED_HOSTS
-
 
 def create_app() -> Flask:
     app = Flask(__name__)
@@ -17,10 +15,7 @@ def create_app() -> Flask:
     app.register_blueprint(genres_blueprint)
     app.register_blueprint(users_blueprint)
 
-    CORS(
-        app,
-        resources={r"/*": {"origins": ALLOWED_HOSTS}},
-    )
+    CORS(app)
 
     return app
 

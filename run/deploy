@@ -1,4 +1,4 @@
 #!/bin/bash
 
 poetry export --without-hashes --format=requirements.txt --output=requirements.txt
-zappa update dev
+zappa update prod
