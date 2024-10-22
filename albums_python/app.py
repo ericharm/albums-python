@@ -1,7 +1,7 @@
 from flask import Flask
 from flask_cors import CORS
 
-from albums_python.defs.env import ALLOWED_HOSTS, ENV
+from albums_python.defs.env import ENV
 
 
 def create_app() -> Flask:
@@ -20,7 +20,8 @@ def create_app() -> Flask:
     if ENV == "local":
         CORS(app)
     else:
-        CORS(app, origins=[ALLOWED_HOSTS])
+        CORS(app)
+        # CORS(app, origins=[ALLOWED_HOSTS])
 
     return app
 
