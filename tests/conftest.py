@@ -10,6 +10,7 @@ os.environ["ENV"] = "test"
 os.environ["DB_DRIVER"] = "sqlite"
 os.environ["DB_NAME"] = ":memory:"
 os.environ["SECRET_KEY"] = "secret"
+os.environ["ALLOWED_HOSTS"] = "localhost"
 
 from albums_python.client.database import get_database_connection  # noqa
 from albums_python.query.models import TABLES
