@@ -15,7 +15,12 @@ def create_app() -> Flask:
     app.register_blueprint(genres_blueprint)
     app.register_blueprint(users_blueprint)
 
-    CORS(app)
+    CORS(
+        app,
+        origins="*",
+        allow_headers="*",
+        methods=["GET", "POST", "PUT", "DELETE", "OPTIONS", "PATCH"],
+    )
 
     return app
 
