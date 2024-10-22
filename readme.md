@@ -3,22 +3,21 @@
 - `poetry shell`
 - `poetry install`
 - `pytest`
+- `cp .env.example .env`
+- Update .env.  You'll need to generate a secret key on your own and map out the DB schema for the app
 - `run/serve`
 
 # TODO
 
-- Albums
-    - Sort by any column
-    - Format enum?
-
-- Genres
-    - GET /genres (this is to fill the select options)
-    - Create a new genre
+- API
+    - Create a production user
     - Disable /register in production
     - index album_id on album_genres
+    - Create a new genre
     - Set genres at album creation
     - GET genres/<genre_id> (Don't think the original app had this feature)
         - Paginated
+    - Sort albums by any column
     - Format enum?
 
 - UI
@@ -26,6 +25,7 @@
     - Remove genre from album
     - Genre select
     - Add genre to album
+
     - Auto logout on 403 response (include error toast)
         - [x] Delete album
         - [ ] Create album
