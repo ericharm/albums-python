@@ -9,6 +9,14 @@ from albums_python.query.models.genre import Genre
 
 
 @dataclass
+class CreateGenreRequest:
+    name: str
+
+
+CreateGenreRequestSchema = class_schema(CreateGenreRequest)()
+
+
+@dataclass
 class GenreResponse:
     id: int
     name: str

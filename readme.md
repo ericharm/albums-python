@@ -10,7 +10,6 @@
 # TODO
 
 - API
-    - Create a production user
     - Disable /register in production
     - index album_id on album_genres
     - Create a new genre
@@ -21,15 +20,8 @@
     - Format enum?
 
 - UI
-    - Genre pills
     - Remove genre from album
-    - Genre select
     - Add genre to album
-
-    - Auto logout on 403 response (include error toast)
-        - [x] Delete album
-        - [ ] Create album
-        - [ ] Update album
     - Add genres to album with creation request
     - Format Enum?
     - Genre page (will this be the only page besides AlbumsPage?)
