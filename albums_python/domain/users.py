@@ -4,7 +4,7 @@ from typing import Optional, cast
 import jwt
 from passlib.hash import bcrypt
 
-from albums_python.defs.user_defs import JWT_ALGORITHM, SECRET_KEY
+from albums_python.defs.user_defs import JWT_ALGORITHM, JWT_EXPIRATION_HOURS, SECRET_KEY
 from albums_python.domain.utils import current_utc_datetime
 from albums_python.query.user_queries import create_user, get_user_by_email
 from albums_python.service.models.user_schemas import UserResponse
@@ -46,7 +46,7 @@ def register_user(email: str, password: str) -> Optional[UserResponse]:
 
 
 def _generate_jwt(user_id: str) -> tuple[str, datetime]:
-    expiration = current_utc_datetime() + timedelta(hours=1)
+    expiration = current_utc_datetime() + timedelta(hours=JWT_EXPIRATION_HOURS)
     payload = dict(
         user_id=user_id,
         exp=expiration,

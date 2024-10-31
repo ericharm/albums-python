@@ -2,6 +2,7 @@ from typing import Union
 
 from flask import Blueprint
 
+from albums_python.domain import albums as albums_domain
 from albums_python.domain.album_genres import is_album_already_associated_with_genre
 from albums_python.query import album_genre_queries, album_queries, genre_queries
 from albums_python.service.jwt import jwt_required
@@ -54,6 +55,7 @@ def create(album_id: int, genre_id: int, user_id: int) -> Response:
         return dict(message=f"Album<{album_id}> is already associated with Genre<{genre_id}>"), 400
 
     association = album_genre_queries.add_genre_to_album(album, genre)
+    albums_domain.search_albums.cache_clear()
 
     return (
         AlbumGenreResponseSchema.dump(
@@ -72,4 +74,5 @@ def delete(album_genre_id: int, user_id: int) -> Response:
         return dict(message=f"AlbumGenre<{album_genre_id}> not found"), 404
 
     album_genre_queries.remove_album_genre_association(association)
+    albums_domain.search_albums.cache_clear()
     return dict()
