@@ -60,7 +60,7 @@ typecheck = ["mypy"]
 name = "black"
 version = "24.10.0"
 description = "The uncompromising code formatter."
-category = "main"
+category = "dev"
 optional = false
 python-versions = ">=3.9"
 files = [
@@ -581,7 +581,7 @@ typing-extensions = "*"
 name = "flake8"
 version = "7.1.1"
 description = "the modular source code checker: pep8 pyflakes and co"
-category = "main"
+category = "dev"
 optional = false
 python-versions = ">=3.8.1"
 files = [
@@ -690,7 +690,7 @@ files = [
 name = "isort"
 version = "5.13.2"
 description = "A Python utility / library to sort Python imports."
-category = "main"
+category = "dev"
 optional = false
 python-versions = ">=3.8.0"
 files = [
@@ -894,7 +894,7 @@ tests = ["pytest (>=5.4)", "pytest-mypy-plugins (>=1.2.0)"]
 name = "mccabe"
 version = "0.7.0"
 description = "McCabe checker, plugin for flake8"
-category = "main"
+category = "dev"
 optional = false
 python-versions = ">=3.6"
 files = [
@@ -906,7 +906,7 @@ files = [
 name = "mypy"
 version = "1.12.0"
 description = "Optional static typing for Python"
-category = "main"
+category = "dev"
 optional = false
 python-versions = ">=3.8"
 files = [
@@ -1016,7 +1016,7 @@ totp = ["cryptography"]
 name = "pathspec"
 version = "0.12.1"
 description = "Utility library for gitignore style pattern matching of file paths."
-category = "main"
+category = "dev"
 optional = false
 python-versions = ">=3.8"
 files = [
@@ -1062,7 +1062,7 @@ files = [
 name = "platformdirs"
 version = "4.3.6"
 description = "A small Python package for determining appropriate platform-specific dirs, e.g. a `user data dir`."
-category = "main"
+category = "dev"
 optional = false
 python-versions = ">=3.8"
 files = [
@@ -1191,7 +1191,7 @@ files = [
 name = "pycodestyle"
 version = "2.12.1"
 description = "Python style guide checker"
-category = "main"
+category = "dev"
 optional = false
 python-versions = ">=3.8"
 files = [
@@ -1215,7 +1215,7 @@ files = [
 name = "pyflakes"
 version = "3.2.0"
 description = "passive checker of Python programs"
-category = "main"
+category = "dev"
 optional = false
 python-versions = ">=3.8"
 files = [
@@ -1474,7 +1474,7 @@ files = [
 name = "tomli"
 version = "2.0.2"
 description = "A lil' TOML parser"
-category = "main"
+category = "dev"
 optional = false
 python-versions = ">=3.8"
 files = [
@@ -1711,4 +1711,4 @@ wheel = "*"
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.10"
-content-hash = "1a36baaffd78caa70e3538a8a044af752ce2ad4b7377b001fd9642a663d58999"
+content-hash = "0b63adea26a09282209846cb0be205a20ddd2179a286bfc183bc50a331a58d05"
