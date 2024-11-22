@@ -10,9 +10,8 @@
 # TODO
 
 - API
-    - Disable /register in production
+    - Disable POST /register in production
     - index album_id on album_genres
-    - Create a new genre
     - Set genres at album creation
     - GET genres/<genre_id> (Don't think the original app had this feature)
         - Paginated
@@ -20,8 +19,6 @@
     - Format enum?
 
 - UI
-    - Remove genre from album
-    - Add genre to album
     - Add genres to album with creation request
     - Format Enum?
     - Genre page (will this be the only page besides AlbumsPage?)
