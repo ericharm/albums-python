@@ -1,4 +1,4 @@
 #!/bin/bash
 
-poetry export --without-hashes --format=requirements.txt --output=requirements.txt
+uv pip freeze > requirements.txt
 zappa update prod

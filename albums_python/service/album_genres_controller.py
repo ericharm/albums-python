@@ -52,7 +52,10 @@ def create(album_id: int, genre_id: int, user_id: int) -> Response:
     genre, *_ = genres
 
     if is_album_already_associated_with_genre(album, genre):
-        return dict(message=f"Album<{album_id}> is already associated with Genre<{genre_id}>"), 400
+        return (
+            dict(message=f"Album<{album_id}> is already associated with Genre<{genre_id}>"),
+            400,
+        )
 
     association = album_genre_queries.add_genre_to_album(album, genre)
     albums_domain.search_albums.cache_clear()

@@ -16,7 +16,10 @@ def test_register_user(faker: Faker, client: TestClient) -> None:
     now = current_utc_datetime()
     later = now + timedelta(hours=1)
 
-    with freeze_time(now), patch("albums_python.domain.users._generate_jwt") as mock_generate_jwt:
+    with (
+        freeze_time(now),
+        patch("albums_python.domain.users._generate_jwt") as mock_generate_jwt,
+    ):
         mock_jwt = faker.sha256()
         mock_generate_jwt.return_value = mock_jwt, later
 

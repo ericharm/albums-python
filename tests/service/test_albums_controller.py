@@ -66,9 +66,12 @@ def test_albums_index_with_query(client: TestClient) -> None:
             notes=None,
         )
 
-    with patch(
-        "albums_python.service.albums_controller.albums_domain.search_albums"
-    ) as mock_search_albums, client() as c:
+    with (
+        patch(
+            "albums_python.service.albums_controller.albums_domain.search_albums"
+        ) as mock_search_albums,
+        client() as c,
+    ):
         mock_search_albums.return_value = dict(
             page=1, page_size=10, total_pages=1, total_count=1, albums=[album]
         )
