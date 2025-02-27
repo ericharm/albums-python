@@ -18,8 +18,7 @@ users_blueprint = Blueprint("users", __name__)
 @users_blueprint.post("/users")
 @use_args(RegisterUserRequestSchema)
 def register_user(request: RegisterUserRequest) -> Response:
-
-    if IS_PRODUCTION == "production":
+    if IS_PRODUCTION:
         return dict(message="Not allowed in production"), 403
 
     user = users_domain.register_user(email=request.email, password=request.password)
